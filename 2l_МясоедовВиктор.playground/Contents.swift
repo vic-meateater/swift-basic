@@ -44,4 +44,3 @@ fib(50)
 var a:[Int]=[]
 for n in 0...200{n>1 && !(2..<n).contains{n%$0==0} ? a.append(n):nil}
 print(n)
-
