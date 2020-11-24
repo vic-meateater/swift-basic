@@ -14,10 +14,12 @@ enum Punches {
 
 class Enemy {
     
-    var nick: String //Ник
-    var hp: Int = 10 //Количество ХП
-    var hpBottle: Int = 2 //Сколько раз сможет отхилиться
-    let HightPunchRand = Int.random(in: 7...17)
+    var nick: String
+    var hp: Int
+    var hpBottle: Int
+    let hightPunchRand = Int.random(in: 10...20)
+    let middlePunchRand = Int.random(in: 7...15)
+    let lowPunchRand = Int.random(in: 4...10)
     
     init(nick: String, hp: Int, hpBottle: Int) {
         self.nick = nick
@@ -32,21 +34,19 @@ class Enemy {
         switch punch {
         case .hight:
             
-            self.hp -= HightPunchRand
+            self.hp -= hightPunchRand
             niceSeparator()
-            print("Вы нанесли высокий \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(HightPunchRand) hp")
+            print("Вы нанесли высокий \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(hightPunchRand) hp")
             trySelfHeal()
         case .middle:
-            let rand = Int.random(in: 10...20)
-            self.hp -= rand
+            self.hp -= middlePunchRand
             niceSeparator()
-            print("Вы нанесли средний \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(rand) hp")
+            print("Вы нанесли средний \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(middlePunchRand) hp")
             trySelfHeal()
         case .low:
-            let rand = Int.random(in: 3...6)
-            self.hp -= rand
+            self.hp -= lowPunchRand
             niceSeparator()
-            print("Вы нанесли низкий \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(rand) hp")
+            print("Вы нанесли низкий \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(lowPunchRand) hp")
             trySelfHeal()
         }
         print("У \(self.nick) \(self.hp) HP")
@@ -55,7 +55,7 @@ class Enemy {
         guard self.hpBottle > 0 else {
             return print("Хилки кончились")
         }
-        let rand = Int.random(in: 100...500)
+        let rand = Int.random(in: 100...300)
         self.hp += rand
         self.hpBottle -= 1
         print("Благословенное лечение на \(rand) HP\nТеперь у \(self.nick) \(self.hp) HP")
@@ -63,7 +63,7 @@ class Enemy {
     }
 
     private func trySelfHeal(){
-        if self.hp < Int(Double(self.hp) * 0.9) {
+        if self.hp <= Int(Double(self.hp) * 0.9) {
             let rand = Double.random(in: 0.0 ... 0.9)
             print("Сейчас подлечусь!")
             rand > 0.59 ? Heal() : print("...Случился Факап с хилом ((...")
@@ -78,8 +78,8 @@ class Enemy {
 
 
 class MageEnemy : Enemy {
-    var mageShield: Int
-    init(nick: String, hp: Int, hpBottle: Int, mageShield: Int) {
+    var mageShield: Bool
+    init(nick: String, hp: Int = 100, hpBottle: Int, mageShield: Bool) {
         self.mageShield = mageShield
         super.init(nick: nick, hp: hp, hpBottle: hpBottle)
     }
@@ -88,11 +88,13 @@ class MageEnemy : Enemy {
         super.Punch(punch)
         switch punch {
         case .hight:
-            magicBarier(getDamage: HightPunchRand)
+            mageShield ? magicBarier(getDamage: hightPunchRand) : nil
             print("Мы в hight")
         case .middle:
+            mageShield ? magicBarier(getDamage: hightPunchRand) : nil
             print("мы в middle")
         case .low:
+            mageShield ? magicBarier(getDamage: hightPunchRand) : nil
             print("мы в low ")
         }
         
@@ -107,12 +109,8 @@ class MageEnemy : Enemy {
 }
 
 
-var enemy = Enemy(nick: "SomeEnemy", hp: 50, hpBottle: 5)
-var mage = MageEnemy(nick: "mage", hp: 50, hpBottle: 5, mageShield: 100)
-//print(enemy)
-//print(mage)
-//enemy.Punch(.hight)
-//enemy.Punch(.low)
+
+var mage = MageEnemy(nick: "mage", hpBottle: 5, mageShield: true)
 mage.Punch(.hight)
 mage.Punch(.middle)
 mage.Punch(.low)
