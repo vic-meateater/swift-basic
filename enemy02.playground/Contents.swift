@@ -77,11 +77,11 @@ class Enemy {
 }
 
 
-class MageEnemy : Enemy {
+class Mage: Enemy {
     var mageShield: Bool
-    init(nick: String, hp: Int = 100, hpBottle: Int, mageShield: Bool) {
+    init(nick: String, hpBottle: Int, mageShield: Bool) {
         self.mageShield = mageShield
-        super.init(nick: nick, hp: hp, hpBottle: hpBottle)
+        super.init(nick: nick, hp: 100, hpBottle: hpBottle)
     }
     
     override func Punch(_ punch: Punches) {
@@ -89,13 +89,10 @@ class MageEnemy : Enemy {
         switch punch {
         case .hight:
             mageShield ? magicBarier(getDamage: hightPunchRand) : nil
-            print("Мы в hight")
         case .middle:
-            mageShield ? magicBarier(getDamage: hightPunchRand) : nil
-            print("мы в middle")
+            mageShield ? magicBarier(getDamage: middlePunchRand) : nil
         case .low:
-            mageShield ? magicBarier(getDamage: hightPunchRand) : nil
-            print("мы в low ")
+            mageShield ? magicBarier(getDamage: lowPunchRand) : nil
         }
         
     }
@@ -108,9 +105,37 @@ class MageEnemy : Enemy {
     }
 }
 
+class Rogue: Enemy {
+    var increaseAgility: Bool
+    init(nick: String, hpBottle: Int, increaseAgility: Bool){
+        self.increaseAgility = increaseAgility
+        super.init(nick: nick, hp: 80, hpBottle: hpBottle)
+    }
+    
+    override func Punch(_ punch: Punches) {
+        super.Punch(punch)
+        switch punch {
+        case .hight:
+            increaseAgility ? tryDodge(getDamage: hightPunchRand) : nil
+            print("Мы в hight")
+        case .middle:
+            increaseAgility ? tryDodge(getDamage: middlePunchRand) : nil
+            print("мы в middle")
+        case .low:
+            increaseAgility ? tryDodge(getDamage: lowPunchRand) : nil
+            print("мы в low ")
+        }
+        
+    }
+    
+    private func tryDodge(getDamage: Int){
+        
+    }
+}
 
 
-var mage = MageEnemy(nick: "mage", hpBottle: 5, mageShield: true)
+var mage = Mage(nick: "Magik",  hpBottle: 5, mageShield: true)
+var rogue = Rogue(nick: "Roga", hpBottle: 4, increaseAgility: true)
 mage.Punch(.hight)
 mage.Punch(.middle)
 mage.Punch(.low)
