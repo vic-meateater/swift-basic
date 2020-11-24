@@ -17,6 +17,7 @@ class Enemy {
     var nick: String //Ник
     var hp: Int = 10 //Количество ХП
     var hpBottle: Int = 2 //Сколько раз сможет отхилиться
+    let HightPunchRand = Int.random(in: 7...17)
     
     init(nick: String, hp: Int, hpBottle: Int) {
         self.nick = nick
@@ -24,15 +25,16 @@ class Enemy {
         self.hpBottle = hpBottle
     }
     func Punch(_ punch: Punches){
+        
         guard self.hp > 0 else {
             return print("HP кончилось")
         }
         switch punch {
         case .hight:
-            let rand = Int.random(in: 7...17)
-            self.hp -= rand
+            
+            self.hp -= HightPunchRand
             niceSeparator()
-            print("Вы нанесли высокий \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(rand) hp")
+            print("Вы нанесли высокий \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(HightPunchRand) hp")
             trySelfHeal()
         case .middle:
             let rand = Int.random(in: 10...20)
@@ -86,6 +88,7 @@ class MageEnemy : Enemy {
         super.Punch(punch)
         switch punch {
         case .hight:
+            magicBarier(getDamage: HightPunchRand)
             print("Мы в hight")
         case .middle:
             print("мы в middle")
@@ -93,6 +96,13 @@ class MageEnemy : Enemy {
             print("мы в low ")
         }
         
+    }
+    
+    private func magicBarier(getDamage: Int){
+        let reflectDamage = Double(getDamage) * Double.random(in: 0...0.5)
+        self.hp += Int(reflectDamage)
+        print("\(self.nick) использовал Магический барьер, отразив \(Int(reflectDamage)) урона")
+        print("у \(self.nick) \(self.hp) HP")
     }
 }
 
@@ -106,3 +116,4 @@ var mage = MageEnemy(nick: "mage", hp: 50, hpBottle: 5, mageShield: 100)
 mage.Punch(.hight)
 mage.Punch(.middle)
 mage.Punch(.low)
+
