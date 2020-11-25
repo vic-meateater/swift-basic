@@ -2,7 +2,7 @@ import Foundation
 
 /*
  На занятии сказали, что можно сделать что-то своё.
- Небольшая текстовая игра на повторение структур.
+ Небольшая текстовая игра на повторение классов.
  
  Punch Youre Enemy v0.2
  */
@@ -49,7 +49,6 @@ class Enemy {
             print("Вы нанесли низкий \(hitDiscriptions[Int.random(in: 0..<hitDiscriptions.count)]) на \(lowPunchRand) hp")
             trySelfHeal()
         }
-        print("У \(self.nick) \(self.hp) HP")
     }
     private func Heal (){
         guard self.hpBottle > 0 else {
@@ -117,19 +116,19 @@ class Rogue: Enemy {
         switch punch {
         case .hight:
             increaseAgility ? tryDodge(getDamage: hightPunchRand) : nil
-            print("Мы в hight")
         case .middle:
             increaseAgility ? tryDodge(getDamage: middlePunchRand) : nil
-            print("мы в middle")
         case .low:
             increaseAgility ? tryDodge(getDamage: lowPunchRand) : nil
-            print("мы в low ")
         }
         
     }
     
     private func tryDodge(getDamage: Int){
-        
+        let rand = Double.random(in: 0.0 ... 0.9)
+        rand > 0.59 ? self.hp += getDamage : nil
+        rand > 0.59 ? print("\(self.nick) увернулся от удара!") : print("\(self.nick) не увернулся от удара!")
+        print("у \(self.nick) \(self.hp) HP")
     }
 }
 
@@ -139,4 +138,7 @@ var rogue = Rogue(nick: "Roga", hpBottle: 4, increaseAgility: true)
 mage.Punch(.hight)
 mage.Punch(.middle)
 mage.Punch(.low)
+rogue.Punch(.hight)
+rogue.Punch(.middle)
+rogue.Punch(.low)
 
