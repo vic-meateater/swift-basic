@@ -12,6 +12,7 @@ enum Punches {
     case hight, middle, low
 }
 
+
 class Enemy {
     
     var nick: String
@@ -26,6 +27,7 @@ class Enemy {
         self.hp = hp
         self.hpBottle = hpBottle
     }
+    
     func Punch(_ punch: Punches){
         
         guard self.hp > 0 else {
@@ -50,6 +52,7 @@ class Enemy {
             trySelfHeal()
         }
     }
+    
     private func Heal (){
         guard self.hpBottle > 0 else {
             return print("Хилки кончились")
@@ -62,11 +65,9 @@ class Enemy {
     }
 
     private func trySelfHeal(){
-        if self.hp <= Int(Double(self.hp) * 0.9) {
             let rand = Double.random(in: 0.0 ... 0.9)
             print("Сейчас подлечусь!")
             rand > 0.59 ? Heal() : print("...Случился Факап с хилом ((...")
-        }
     }
     
     private func niceSeparator(){
@@ -104,6 +105,7 @@ class Mage: Enemy {
     }
 }
 
+
 class Rogue: Enemy {
     var increaseAgility: Bool
     init(nick: String, hpBottle: Int, increaseAgility: Bool){
@@ -131,7 +133,6 @@ class Rogue: Enemy {
         print("у \(self.nick) \(self.hp) HP")
     }
 }
-
 
 var mage = Mage(nick: "Magik",  hpBottle: 5, mageShield: true)
 var rogue = Rogue(nick: "Roga", hpBottle: 4, increaseAgility: true)
