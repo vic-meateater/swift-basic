@@ -1,22 +1,32 @@
 import UIKit
 
-protocol Car {
+protocol Car: AnyObject {
     var color: String { get }
     var model: String { get }
     var topSpeed: Int { get }
     var typeFuel: String { get }
-    func openWindow()
+    var trunkVolume: Int { get }
+    var windowsIsOpen: Bool { get set }
 }
     
     
 
 extension Car {
-    func openWindow(){
-        print("Окно открыто")
+    func openWindows(){
+        if windowsIsOpen {
+            print("Окна у \(model) уже открыты")
+        }else{
+            print("Окна у \(model) открыты")
+            windowsIsOpen = true
+        }
     }
-    func closeWindow(){
-         print("Окно закрыто")
-        
+    func closeWindows(){
+        if windowsIsOpen{
+            print("Окна у \(model) закрыты")
+            windowsIsOpen = false
+        }else{
+            print("Окна у \(model) уже закрыты")
+        }
     }
     
     func startEngine(){
@@ -29,12 +39,13 @@ extension Car {
 
 class SportСar: Car {
     let color: String = "red"
-    let model: String = "Porshe Cayen"
+    let model: String = "Porsche Cayenne"
     let topSpeed: Int = 240
     let useFuelMark = 220
     let typeFuel: String = "Electro"
     let autoPilot = true
     let trunkVolume = 50
+    var windowsIsOpen = false
 
 }
 extension SportСar: CustomStringConvertible {
@@ -50,8 +61,8 @@ class TrunkCar: Car {
     let topSpeed: Int = 120
     let useFuelMark = 95
     let typeFuel: String = "Benzin"
-    let autoPilot = false
     let trunkVolume = 450
+    var windowsIsOpen = true
 }
 extension TrunkCar: CustomStringConvertible {
     var description: String {
@@ -62,12 +73,15 @@ extension TrunkCar: CustomStringConvertible {
 
 
 var sportCar = SportСar()
-sportCar.closeWindow()
+sportCar.openWindows()
+sportCar.openWindows()
+sportCar.closeWindows()
 sportCar.color
 sportCar.autoPilot
 sportCar.trunkVolume
 var trunkCar = TrunkCar()
 trunkCar.topSpeed
-trunkCar.closeWindow()
+trunkCar.closeWindows()
+trunkCar.closeWindows()
 print(sportCar)
 print(trunkCar)
