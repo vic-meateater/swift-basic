@@ -1,4 +1,5 @@
 import UIKit
+import UIKit
 
 struct Ticket {
     var price: Int
